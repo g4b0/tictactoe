@@ -60,4 +60,29 @@ class GameController extends Controller
                     ->header('Content-Type', 'application/json');
     }
 
+    /**
+     * Get the board from the cache
+     *
+     * @param string $id
+     * 
+     *  Returns a JSON with the board status
+     *  eg: {"board":[[0,0,0],[0,1,0],[0,0,0]],"next":2}
+     */
+    public function get(string $id)
+    {
+        $board = Cache::get($id);
+
+        if (null === $board) {
+            $ret = [
+                'err' => 1, 
+                'msg' =>'Board not found'
+            ];
+            return response(json_encode($ret), 404)
+                    ->header('Content-Type', 'application/json');
+        }
+
+        return response($board, 200)
+                    ->header('Content-Type', 'application/json');
+    }
+
 }

@@ -54,6 +54,26 @@ When a player wins, or the game is a drawn, the endpoint comunicate it to the cl
 {"board":[[1,0,2],[2,2,0],[1,1,1]],"next":2,"winner":1} 
 ```
 
+When a move is a mate or checkmate, the endpoint will show it with the mate array. The player numbers are the array keys, and the value can be:
+* 0: normal move
+* 1: mate
+* 2: checkmate
+
+```code
+   0 1 2 
+   
+0  O| |X
+   -----
+1  X|X|
+   -----
+2  O| |O
+```
+```json
+{"board":[[1,0,2],[2,0,0],[1,0,1]],"next":2,"mate":{"1":0,"2":2}}
+```
+
+For example the followin is the situation after a player 1 (O) move, that is a checkmate:
+
 In case of error they are notified to the client with the err and msg parameters, following an exampler:
 
 ```json
@@ -96,16 +116,17 @@ docker exec -it <CONTAINER-NAME> php artisan run:game
 
 ### Routing 
 
-The two endpoints (game and move) are declared in routes\web.php
+The three endpoints for create, get a game and put a move are declared in routes\web.php
 
 ```php
 $router->post('/game', 'GameController@create');
+$router->get('/game/{id}', 'GameController@get');
 $router->put('/move/{id}/{player}/{x}/{y}', 'GameController@move');
 ```
 
 ### Controller
 
-Controller logic is handled in app\Http\Controllers\GameController.php, a standard Lumen controller with two functions the handle respectively the game and move endpoints.
+Controller logic is handled in app\Http\Controllers\GameController.php, a standard Lumen controller with three functions the handle respectively the game creation, the game status retrivial and move put.
 
 ### Business logic
 

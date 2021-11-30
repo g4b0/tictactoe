@@ -85,7 +85,10 @@ class RunGameCommand extends Command
         
         foreach ($this->moves as $move) {
             $board = $this->move($gameId, $move[0], $move[1], $move[2]);
-            $this->draw($board->board);
+
+            if (isset($board->board)) {
+                $this->draw($board->board);
+            }
             
             if (($board->err??0) > 0) {
                 $this->error("Err: {$board->err} - {$board->msg}");

@@ -17,4 +17,5 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 $router->post('/game', 'GameController@create');
+$router->get('/game/{id}', 'GameController@get');
 $router->put('/move/{id}/{player}/{x}/{y}', 'GameController@move');
